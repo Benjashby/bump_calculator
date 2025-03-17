@@ -1,0 +1,31 @@
+import streamlit as st
+import datetime
+
+def calculate_optimum_bump(day_of_campaign):
+    today = datetime.date.today()
+
+    # Calculate day 8 bump
+    day_8_bump = today + datetime.timedelta(days=(8 - day_of_campaign))
+
+    # Calculate halfway bump for next cycle
+    next_cycle_start = today + datetime.timedelta(days=(15 - day_of_campaign))
+    halfway_bump = next_cycle_start + datetime.timedelta(days=7)
+
+    # Determine the next available bump date
+    if today <= day_8_bump:
+        next_bump = day_8_bump
+    else:
+        next_bump = halfway_bump
+
+    return next_bump.strftime("%Y-%m-%d")
+
+# Streamlit UI
+st.title("Optimum Listing Bump Date Calculator")
+
+day_of_campaign = st.number_input("Enter the current day of the campaign:", min_value=1, max_value=15, step=1)
+
+if st.button("Calculate Optimum Bump Date"):
+    bump_date = calculate_optimum_bump(day_of_campaign)
+    st.success(f"The next available Optimum Bump Date is: {bump_date}")
+
+
